@@ -1,9 +1,0 @@
---- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/RenzMc/Composter
-build-by-default: true
-branches:
-- main
-projects:
-  VanillaComposter:
-    path: ""
-    icon: icon.png
-...
