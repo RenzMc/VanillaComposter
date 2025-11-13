@@ -16,8 +16,6 @@ declare(strict_types=1);
 namespace Renz\Composter;
 
 use pocketmine\block\RuntimeBlockStateRegistry;
-use pocketmine\crafting\ShapedRecipe;
-use pocketmine\crafting\TagWildcardRecipeIngredient;
 use pocketmine\data\bedrock\block\BlockStateNames;
 use pocketmine\data\bedrock\block\BlockTypeNames;
 use pocketmine\data\bedrock\item\SavedItemData;
@@ -75,45 +73,6 @@ class Main extends PluginBase
 
         StringToItemParser::getInstance()->register("composter", fn() => clone $composter->asItem());
         CreativeInventory::getInstance()->add($composter->asItem());
-
-        $recipeShape = ["# #", "###", "# #"];
-        $recipeIngredients = [
-            "#" => new TagWildcardRecipeIngredient("minecraft:slabs")
-        ];
-        $recipeResults = [$composter->asItem()];
-        $recipe = new ShapedRecipe($recipeShape, $recipeIngredients, $recipeResults);
-
-        $manager = $this->getServer()->getCraftingManager();
-
-        try {
-            $result = $composter->asItem();
-
-            $exists = false;
-            foreach ($manager->getCraftingRecipeIndex() as $existing) {
-                $existingResults = $existing->getResults();
-                if (isset($existingResults[0])) {
-                    $res = $existingResults[0];
-                    try {
-                        $resTag = $res->getNamedTag();
-                        $resultTag = $result->getNamedTag();
-                        $sameTag = ($resTag !== null && $resultTag !== null) ? $resTag->equals($resultTag) : true;
-                    } catch (\Throwable $t) {
-                        $sameTag = true;
-                    }
-
-                    if ($res->getStateId() === $result->getStateId() && $res->getCount() === $result->getCount() && $sameTag) {
-                        $exists = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$exists) {
-                $manager->registerShapedRecipe($recipe);
-            }
-        } catch (\Throwable $e) {
-            $this->getLogger()->error(TextFormat::RED . "Failed to register recipe safely: " . $e->getMessage());
-        }
     }
 
     protected function onDisable(): void
