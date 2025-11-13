@@ -5,4 +5,5 @@ branches:
 projects:
   Composter:
     path: ""
+    icon: icon.webp
 ...
