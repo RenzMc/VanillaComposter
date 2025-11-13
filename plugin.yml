@@ -1,0 +1,6 @@
+name: Composter
+author: Renz
+version: 0.0.1
+api: 5.0.0
+main: Renz\Composter\Main
+description: "composter block with composting mechanics for PocketMine-MP 100% like vanilla"
